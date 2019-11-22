@@ -1,20 +1,24 @@
-Fs = 1000;
+Fs = 10000;
 dt = 1/Fs;
 hop_sequence = {1,2,3,4,5};
 t = -5:dt:5;
 f = 10;
+fc = 1000;
 signal = 10*sin(2*pi*f*t);
-fc = 100;
-signal_modulated = fm(signal,fc,Fs,1);
-[signal_modulated_spectrum, f, df] = contFT(signal_modulated, -5, dt, 1);
-plot(f,signal_modulated_spectrum);
-plot(t,signal,'c',t,signal_modulated,'b--');
-xlabel('time');
-ylabel('amp');
+modulated_signal = fm_transmitter(signal,fc,Fs,5);
+
+[spectrum, freq, df] = get_spectrum(modulated_signal, t(1), dt, 1);
+
 figure(1);
-% for i = 1:length(hop_sequence)
-%     signal_modulated = fm(signal,i*fc,Fs,1);
-%     [signal_modulated_spectrum,f,df] = contFT(signal_modulated,-5,dt,1);
-%     plot(f,abs(signal_modulated_spectrum));
-%     hold on;
-% end
+%Display the transmitted spectrum
+for i = 1:length(spectrum(:,1))
+    plot(freq(i,:),abs(spectrum(i,:)));
+    hold on;
+end
+
+%Demodulate the signal
+demodulated_signal = fm_receiver(modulated_signal,fc,Fs,5);
+
+figure(2);
+plot(t, demodulated_signal(1,:));
+

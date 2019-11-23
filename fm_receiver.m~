@@ -1,0 +1,17 @@
+function demodulated_sig = fm_receiver(fm_signal,fc,fs,freq_dev)
+    rh = 1;
+    syms f(t);
+    f(t) = 200*t+fc;
+    t = 1:rh:5;
+    f = double(f(t));
+    demodulated_sig = [];
+    for i = 1:length(t)
+        if i == 1
+            demodulated = fmdemod(fm_signal(1:i*fs),f(i),fs,freq_dev);
+            demodulated_sig = [demodulated_sig,demodulated];
+        else           
+            demodulated = fmdemod(fm_signal(i*fs + 1:(i+1)*fs),f(i),fs,freq_dev);
+            demodulated_sig = [demodulated_sig,demodulated];
+        end
+    end
+end

@@ -23,5 +23,7 @@ df=1/(Nfft*dt);
 %range of frequencies covered
 f = ((0:Nfft-1)-Nfft/2)*df; %same as f=-1/(2*dt):df:1/(2*dt) - df
 %phase shift associated with start time
+disp(size(f));
+disp(size(X));
 X=X.*exp(-1i*2*pi*f*tstart);
 end

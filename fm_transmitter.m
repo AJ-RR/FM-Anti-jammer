@@ -1,13 +1,10 @@
 function modulated_sig = fm_transmitter(message,Fc,Fs,freq_dev)
-    rh = 1;
-    syms f(t)
-    f(t) = 200*t+Fc;
-    t = 1:rh:5;
-    f = double(f(t));
-    disp(f);
-    modulated_sig = [];
-  for i = 1:length(t)
-        modulated = fmmod(message,f(i),Fs,freq_dev);
-        modulated_sig = [modulated_sig;modulated];
+  hop_sequence = [1,2,3,4,5];
+  modulated_sig = [];
+    
+  %Modulate sequentially
+  for i = hop_sequence
+        modulated = fmmod(message,i*Fc,Fs,freq_dev);
+        modulated_sig = [modulated_sig,modulated];
   end  
 end

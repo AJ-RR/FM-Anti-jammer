@@ -1,17 +1,17 @@
 
 [signal, Fs] = audioread('success.wav');
-signal = transpose(signal(:,1));
+signal = signal(:,1);
+signal = transpose(signal);
 disp(Fs);
 dt = 1/Fs;
 t = 0:dt:length(signal)/Fs;
 message_duration = length(signal)/Fs;
-
-[audio_spectrum, audio_freq, dfreq] = contFT(signal, t(1), dt, 10);
+[audio_spectrum, audio_freq, dfreq] = get_spectrum(signal, t(1), dt, 10);
 figure(1);
 plot(audio_freq, abs(audio_spectrum));
-
+% f = 10;
 fc = 4000;
-
+% signal = 10*sin(2*pi*f*t);
 modulated_signal = fm_transmitter(signal,fc,Fs,5);
 
 %Defining the time axis
@@ -20,7 +20,7 @@ disp(length(time));
 disp(length(modulated_signal));
 figure(2);
 plot(time, modulated_signal);
-[spectrum, freq, df] = contFT(modulated_signal, t(1), dt, 1);
+[spectrum, freq, df] = get_spectrum(modulated_signal, t(1), dt, 1);
 
 figure(3);
 plot(freq, abs(spectrum));
@@ -28,4 +28,4 @@ plot(freq, abs(spectrum));
 %Demodulate the signal
 demodulated_signal = fm_receiver(modulated_signal,fc,Fs,5, message_duration);
 disp(length(demodulated_signal));
-audiowrite('final.wav',demodulated_signal,Fs);
+

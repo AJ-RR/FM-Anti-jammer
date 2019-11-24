@@ -1,5 +1,5 @@
 
-[signal, Fs] = audioread('success.wav');
+[signal, Fs] = audioread('whatareyou2.wav');
 signal = transpose(signal(:,1));
 disp(Fs);
 dt = 1/Fs;
@@ -26,7 +26,7 @@ figure(3);
 plot(freq, abs(spectrum));
 
 %Demodulate the signal
-demodulated_signal = fm_receiver(modulated_signal,fc,Fs,5, message_duration);
+demodulated_signal = fm_receiver(modulated_signal,fc,Fs,5);
 disp(length(demodulated_signal));
 [spectrum, freq, df] = contFT(demodulated_signal, t(1), dt, 10);
 figure(4);

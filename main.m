@@ -28,4 +28,11 @@ plot(freq, abs(spectrum));
 %Demodulate the signal
 demodulated_signal = fm_receiver(modulated_signal,fc,Fs,5, message_duration);
 disp(length(demodulated_signal));
+[spectrum, freq, df] = contFT(demodulated_signal, t(1), dt, 10);
+figure(4);
+plot(freq, abs(spectrum));
+y = lowpass(demodulated_signal, 5000, Fs);
+figure(5);
+[spectrum, freq, df] = contFT(y, t(1), dt, 10);
+plot(freq, abs(spectrum));
 audiowrite('final.wav',demodulated_signal,Fs);

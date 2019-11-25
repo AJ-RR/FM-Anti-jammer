@@ -10,6 +10,10 @@ signal = lowpass(signal, 10000, Fs);
 [audio_spectrum, audio_freq, dfreq] = contFT(signal, t(1), dt, 10);
 figure(1);
 plot(audio_freq, abs(audio_spectrum));
+    grid on;
+    title('Message Spectrum');
+    xlabel('f(Hz)');
+    ylabel('M(f)');
 
 fc = 4000;
 
@@ -55,4 +59,18 @@ plot(freq, abs(spectrum));
 % plot(t(1:end-1), demodulated_signal(1:end-9));
 % disp(length(t))
 % disp(length(demodulated_signal))
+demodulated_signal = medfilt1(demodulated_signal,200);
+%figure(5);
+%[spectrum, freq, df] = contFT(demodulated_signal, t(1), dt, 10);
+%plot(freq, abs(spectrum));
+figure(6);
+plot(t(1:end-1), signal);
+    grid on;
+    title('Message Signal');
+    xlabel('t(s)');
+    ylabel('m(t)');
+figure(7);
+plot(t(1:end-1), demodulated_signal(1:end-9));
+disp(length(t))
+disp(length(demodulated_signal))
 audiowrite('final.wav',demodulated_signal,Fs);

@@ -12,8 +12,9 @@ figure(1);
 plot(audio_freq, abs(audio_spectrum));
 
 fc = 4000;
-
-modulated_signal = fm_transmitter(signal,fc,Fs,5);
+%random number seed
+s = rng;
+modulated_signal = fm_transmitter(signal,fc,Fs,50,s);
 
 % %Passing modulated signal through channel
 % modulated_signal = channel(modulated_signal, snr);
@@ -39,12 +40,12 @@ plot(freq, abs(spectrum));
 
 
 %Demodulate the signal
-demodulated_signal = fm_receiver(modulated_signal,fc,Fs,5);
+demodulated_signal = fm_receiver(modulated_signal,fc,Fs,50,s);
 disp(length(demodulated_signal));
 [spectrum, freq, df] = contFT(demodulated_signal, t(1), dt, 10);
 figure(4);
 plot(freq, abs(spectrum));
-% demodulated_signal = lowpass(demodulated_signal, 10000, Fs);
+demodulated_signal = lowpass(demodulated_signal, 4000, Fs);
 % demodulated_signal = medfilt1(demodulated_signal,200);
 % %figure(5);
 % %[spectrum, freq, df] = contFT(demodulated_signal, t(1), dt, 10);
@@ -55,4 +56,5 @@ plot(freq, abs(spectrum));
 % plot(t(1:end-1), demodulated_signal(1:end-9));
 % disp(length(t))
 % disp(length(demodulated_signal))
+
 audiowrite('final.wav',demodulated_signal,Fs);

@@ -24,5 +24,7 @@ function demodulated_sig = fm_receiver(fm_signal,fc,fs,freq_dev)
             end
         end
     end
-    
+     b = 1;
+     a = [1 -0.95];
+     demodulated_sig = filter(b, a, demodulated_sig);
 end

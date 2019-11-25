@@ -3,6 +3,9 @@ function modulated_sig = fm_transmitter(message,Fc,Fs,freq_dev)
   hop_duration = 2*Fs;
   modulated_sig = [];
   m_length = length(message);
+   b = [1 -0.95];
+   a = 1;
+   message = filter(b,a,message);
   %Modulate sequentially
   for i = hop_sequence
     if m_length <= hop_duration

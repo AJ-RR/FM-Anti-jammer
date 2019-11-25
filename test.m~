@@ -1,0 +1,5 @@
+[signal, Fs] = audioread('whatareyou2.wav');
+snr = 10;
+mod_w_noise = awgn(signal, snr);
+audiowrite('final_test.wav',demodulated_signal,Fs);
+

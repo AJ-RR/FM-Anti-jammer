@@ -41,10 +41,10 @@ function demodulated_sig = fm_receiver(fm_signal,fc,fs,freq_dev,s)
             demodulated_sig = [demodulated_sig,demodulated];
         end
     end
-    demodulated_invert = demodulated_sig(end:-1:1);
-    [demodulated_sig, t] = contconv(demodulated_sig, demodulated_invert,0,0,1/fs);
-    figure(7);
-    plot(t, demodulated_sig);
-    disp(length(t))
-    disp(length(demodulated_sig))
+%     demodulated_invert = demodulated_sig(end:-1:1);
+%     [demodulated_sig, t] = contconv(demodulated_sig, demodulated_invert,0,0,1/fs);
+%     figure(7);
+%     plot(t, demodulated_sig);
+%     disp(length(t))
+%     disp(length(demodulated_sig))
 end

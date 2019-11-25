@@ -2,7 +2,7 @@
 signal = transpose(signal(:,1));
 disp(Fs);
 dt = 1/Fs;
-snr = 75;
+snr = 70;
 t = 0:dt:length(signal)/Fs;
 message_duration = length(signal)/Fs;
 signal = lowpass(signal, 4000, Fs);
@@ -56,14 +56,20 @@ plot(freq, abs(spectrum));
 % %plot(freq, abs(spectrum));
 % figure(6);
 % plot(t(1:end-1), signal);
-% figure(7);
-% plot(t(1:end-1), demodulated_signal(1:end-9));
+
+figure(10);
+plot(t(1:end-1), demodulated_signal(1:end-9));
+
+demod_sig = noiseReduction_YW(transpose(demodulated_signal),Fs);
+figure(7);
+plot(t(1:end-1), demod_sig(1:end-9));
 % disp(length(t))
 % disp(length(demodulated_signal))
 %demodulated_signal = medfilt1(demodulated_signal,200);
 %figure(5);
 %[spectrum, freq, df] = contFT(demodulated_signal, t(1), dt, 10);
 %plot(freq, abs(spectrum));
+
 figure(6);
 plot(t(1:end-1), signal);
     grid on;
@@ -72,7 +78,16 @@ plot(t(1:end-1), signal);
     ylabel('m(t)');
 % figure(7);
 % plot(demodulated_signal);
-disp(length(t))
-disp(length(demodulated_signal))
 
-audiowrite('final.wav',demodulated_signal,Fs);
+
+
+disp(length(t));
+disp(length(demodulated_signal));
+
+audiowrite('final.wav',demod_sig,Fs);
+
+
+
+
+
+

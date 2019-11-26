@@ -39,20 +39,20 @@ plot(freq, abs(spectrum));
  %Passing modulated signal through channel
   [jam, fs] = audioread('jamming.wav');
   disp(fs);
-  jam = transpose(jam(:,1)) *  0.01;
+  jam = transpose(jam(:,1)) * 1;
   jam = resample(jam, 3, 1);
   fs = 3*fs;
-  jam = lowpass(jam, 4000, fs);
-  jamming_signal = fmmod(jam,60000,fs,50);
+  jam = lowpass(jam, 5000, fs);
+  jamming_signal = fmmod(jam,18000,fs,50);
 %   disp(length(jamming_signal));
 %   disp(length(modulated_signal));
   jamming_signal(end+1:end+(length(modulated_signal)-length(jamming_signal))) = 0;
      modulated_signal = modulated_signal+jamming_signal;
-%    modulated_signal = channel(modulated_signal, snr);
-%  [spectrum, freq, df] = contFT(modulated_signal, t(1), dt, 1);
+%     modulated_signal = channel(modulated_signal, snr);
+  [spectrum, freq, df] = contFT(modulated_signal, t(1), dt, 1);
 % 
-%  figure(8);
-%  plot(freq, abs(spectrum));
+  figure(8);
+  plot(freq, abs(spectrum));
 
 
 

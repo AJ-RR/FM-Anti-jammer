@@ -1,8 +1,6 @@
 function demodulated_sig = fm_receiver(fm_signal,fc,fs,freq_dev,s)
     rng(s);
     hop_sequence = randi(5,[1,5])
-%     hop_sequence = [2,4,3,4,2];  
-    %hop_sequence = 1:1/50:5;
     hop_duration = 2*fs;
     demodulated_sig = [];
     m_length = length(fm_signal);
@@ -15,9 +13,9 @@ function demodulated_sig = fm_receiver(fm_signal,fc,fs,freq_dev,s)
             demodulated(end - 1000 : end) = 0;
             demodulated(1:1000) = awgn(demodulated(1:1000), 50);
             demodulated(end - 1000 : end) = awgn(demodulated(end - 1000 : end), 50);
-            b = 1;
-            a = [1 -0.95];
-            demodulated = filter(b, a, demodulated);
+%             b = 1;
+%             a = [1 -0.95];
+%             demodulated = filter(b, a, demodulated);
             demodulated_sig = [demodulated_sig,demodulated,zeros(hop_duration - length(fm_signal))];
         else
             if i == 1
@@ -35,9 +33,9 @@ function demodulated_sig = fm_receiver(fm_signal,fc,fs,freq_dev,s)
                 demodulated(end - 1000:end) = awgn(demodulated(end - 1000 : end), 50);
                 m_length = m_length - hop_duration;
             end
-            b = 1;
-            a = [1 -0.95];
-            demodulated = filter(b, a, demodulated);
+%             b = 1;
+%             a = [1 -0.95];
+%             demodulated = filter(b, a, demodulated);
             demodulated_sig = [demodulated_sig,demodulated];
         end
     end

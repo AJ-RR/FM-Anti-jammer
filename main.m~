@@ -43,11 +43,11 @@ plot(freq, abs(spectrum));
   jam = resample(jam, 3, 1);
   fs = 3*fs;
   jam = lowpass(jam, 4000, fs);
-  jamming_signal = fmmod(jam,60000,fs,50);
+  jamming_signal = fmmod(jam,55000,fs,50);
 %   disp(length(jamming_signal));
 %   disp(length(modulated_signal));
   jamming_signal(end+1:end+(length(modulated_signal)-length(jamming_signal))) = 0;
-     modulated_signal = modulated_signal+jamming_signal;
+     modulated_signal = jamming_signal;
 %    modulated_signal = channel(modulated_signal, snr);
 %  [spectrum, freq, df] = contFT(modulated_signal, t(1), dt, 1);
 % 
@@ -121,7 +121,7 @@ plot(t(1:end-1), signal);
 % disp(length(t));
 % disp(length(demodulated_signal));
 
-audiowrite('final.wav',demodulated_signal,Fs);
+audiowrite('final.wav',demodulated_sig,Fs);
 
 
 

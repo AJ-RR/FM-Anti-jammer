@@ -2,7 +2,7 @@ function demodulated_sig = fm_receiver(fm_signal,fc,fs,freq_dev,s)
     rng(s);
     hop_sequence = randi(5,[1,5]);
 %     hop_sequence = [1,2,3,4,5];
-    hop_duration = 2*fs;
+    hop_duration = 4*fs;
     demodulated_sig = [];
     m_length = length(fm_signal);
     %Demodulate sequentially

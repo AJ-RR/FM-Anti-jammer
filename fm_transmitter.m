@@ -2,7 +2,7 @@ function modulated_sig = fm_transmitter(message,Fc,Fs,freq_dev,s)
   rng(s);
   hop_sequence = randi(5,[1,5])
 %   hop_sequence = [1,2,3,4,5]
-  hop_duration = 2*Fs;
+  hop_duration = 4*Fs;
   modulated_sig = [];
    m_length = length(message);
     b = [1 -0.95];

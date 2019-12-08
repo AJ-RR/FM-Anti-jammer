@@ -1,13 +1,13 @@
-[signal, Fs] = audioread('Music.wav');
+[signal, Fs] = audioread('whatareyou2.wav');
 signal = transpose(signal(:,1));
-signal = resample(signal, 5, 1);
-Fs = 5*Fs;
+signal = resample(signal, 3, 1);
+Fs = 3*Fs;
 disp(Fs);
 dt = 1/Fs;
 snr = 20;
 t = 0:dt:length(signal)/Fs;
 message_duration = length(signal)/Fs;
-signal = lowpass(signal, 5000, Fs);
+signal = lowpass(signal, 4000, Fs);
 
 [audio_spectrum, audio_freq, dfreq] = contFT(signal, t(1), dt, 10);
 figure(1);
@@ -17,7 +17,7 @@ plot(audio_freq, abs(audio_spectrum));
     xlabel('f(Hz)');
     ylabel('M(f)');
 
-fc = 16000;
+fc = 10000;
 %random number seed
 s = rng;
 modulated_signal = fm_transmitter(signal,fc,Fs,50,s);
@@ -34,24 +34,20 @@ plot(time, modulated_signal);
 
 figure(3);
 plot(freq, abs(spectrum));
-% 
+
  %Passing modulated signal through channel
   [jam, fs] = audioread('jamming.wav');
   disp(fs);
-  jam = transpose(jam(:,1)) * 10;
-  jam = resample(jam, 5, 1);
-  fs = 5*fs;
-   jam = [jam,jam,jam,jam];
+  jam = transpose(jam(:,1)) * 1;
+  jam = resample(jam,3, 1);
+  fs = 3*fs;
      jam = lowpass(jam, 4000, fs);
-  jamming_signal = fmmod(jam,32000,fs,50);
+  jamming_signal = fmmod(jam,20000,fs,50);
   jamming_signal(end+1:end+(length(modulated_signal)-length(jamming_signal))) = 0;
-     modulated_signal = modulated_signal; %+jamming_signal;
-     modulated_signal = channel(modulated_signal, snr);
-  [spectrum, freq, df] = contFT(modulated_signal, t(1), dt, 1);
-% 
-  figure(8);
-  plot(freq, abs(spectrum));
-
+  modulated_signal = modulated_signal +jamming_signal;
+  
+  % uncomment to add noisy channel
+%      modulated_signal = channel(modulated_signal, snr);
 
 
 %Demodulate the signal
@@ -65,21 +61,11 @@ plot(freq, abs(spectrum));
     title('Spectrum of the Received Noisy Signal');
     xlabel('f(Hz)');
     ylabel('M(f)');
-% demodulated_signal = medfilt1(demodulated_signal,200);
-% %figure(5);
-% %[spectrum, freq, df] = contFT(demodulated_signal, t(1), dt, 10);
-% %plot(freq, abs(spectrum));
-% figure(6);
-% plot(t(1:end-1), signal);
-% disp(length(t));
-%  disp(length(demodulated_signal));
-figure(10);
-plot(time(1:end-1), demodulated_signal(1:end-2));
-title('Received Noisy signal');
-xlabel('t(seconds)')
-ylabel('r(t)')
 
- demodulated_signal = noiseReduction_YW(transpose(demodulated_signal),Fs);
+% uncomment to remove noise   
+%  demodulated_signal = noiseReduction_YW(transpose(demodulated_signal),Fs);
+
+
 %  figure(5);
 %  [spectrum, freq, df] = contFT(demodulated_signal', t(1), dt, 10);
 %  plot(freq, abs(spectrum));
@@ -88,19 +74,19 @@ ylabel('r(t)')
 %      xlabel('f(Hz)');
 %      ylabel('M(f)');
  
-figure(7);
-plot(t(1:end-1), signal);
-    grid on;
-    title('Message Signal');
-    xlabel('t(seconds)');
-    ylabel('m(t)');
-
- figure(6);
- plot(time(1:end-1), demodulated_signal(1:end-2));
-    grid on;
-    title('Retrieved Signal');
-    xlabel('t(seconds)');
-    ylabel('m(t)');
+% figure(7);
+% plot(t(1:end-1), signal);
+%     grid on;
+%     title('Message Signal');
+%     xlabel('t(seconds)');
+%     ylabel('m(t)');
+% 
+%  figure(6);
+%  plot(time(1:end-1), demodulated_signal(1:end-2));
+%     grid on;
+%     title('Retrieved Signal');
+%     xlabel('t(seconds)');
+%     ylabel('m(t)');
 %  figure(7);
 %      grid on;
 %     title('Demodulated Signal');
@@ -118,8 +104,8 @@ plot(t(1:end-1), signal);
 %      ylabel('M(f)');
 
  
-demodulated_signal = resample(demodulated_signal,1,5);
-audiowrite('final.wav',demodulated_signal,Fs/5);
+demodulated_signal = resample(demodulated_signal,1,3);
+audiowrite('final.wav',demodulated_signal,Fs/3);
 
 
 

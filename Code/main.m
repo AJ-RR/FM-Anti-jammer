@@ -46,7 +46,7 @@ plot(freq, abs(spectrum));
   jamming_signal(end+1:end+(length(modulated_signal)-length(jamming_signal))) = 0;
   modulated_signal = modulated_signal +jamming_signal;
   
-  % uncomment to add noisy channel
+  % uncomment to add noise to channel
 %      modulated_signal = channel(modulated_signal, snr);
 
 
